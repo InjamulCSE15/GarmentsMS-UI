@@ -38,7 +38,11 @@
     }
   </script>
   <style>
-
+    .tab-button.active {
+      background-color: #fff; 
+      border-radius: 5px;
+      color: #464646;
+    }
   </style>
 
 </head>
@@ -163,7 +167,18 @@
             <h2 class="text-3xl font-bold text-gray-700">Dashboard</span>
             </h2>
           </div>
-          <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 hidden">
+          <div class="p-4">
+            <div class="flex gap-3">
+              <button
+                class="px-4 py-2 text-slate-400 font-semibold hover:bg-blue-500 hover:text-white hover:rounded-md  focus:outline-none tab-button"
+                onclick="showTab('tab1')"><i class="fa-solid fa-grip"></i> Grid 
+              </button>
+              <button
+                class="px-4 py-2 text-slate-400 font-semibold hover:bg-blue-500 hover:text-white hover:rounded-md focus:outline-none tab-button"
+                onclick="showTab('tab2')"><i class="fa-solid fa-grip-vertical"></i> Column </button>
+            </div>
+          </div>
+          <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 tab-content" id="tab1">
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
               <h2 class="text-2xl font-semibold text-gray-700 mb-2 capitalize">last hour product</h2>
               <p class="text-4xl font-bold text-blue-600">10,492</p>
@@ -196,7 +211,7 @@
             </div>
           </div>
 
-          <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto">
+          <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto tab-content" id="tab2">
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
               <h2 class="text-2xl font-semibold text-gray-700 mb-2 capitalize">last hour product</h2>
               <p class="text-4xl font-bold text-blue-600">10,492</p>
@@ -218,13 +233,13 @@
               <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-calendar-check"></i> Today</p>
             </div>
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
-              <h2 class="text-2xl font-semibold text-gray-700 mb-2 capitalize">Total Product QC</h2>
-              <p class="text-4xl font-bold text-red-500">350</p>
+              <h2 class="text-2xl font-semibold text-gray-700 mb-2 capitalize">Total Ratio</h2>
+              <p class="text-4xl font-bold text-sky-500">3.50</p>
               <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-calendar-check"></i> Today</p>
             </div>
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
-              <h2 class="text-2xl font-semibold text-gray-700 mb-2 capitalize">Total Ratio</h2>
-              <p class="text-4xl font-bold text-sky-500">3.50</p>
+              <h2 class="text-2xl font-semibold text-gray-700 mb-2 capitalize">Total Product QC</h2>
+              <p class="text-4xl font-bold text-red-500">350</p>
               <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-calendar-check"></i> Today</p>
             </div>
           </div>
@@ -318,6 +333,35 @@
       };
 
     });
+
+    function showTab(tabId) {
+      // Hide all tab content
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabContents.forEach((content) => {
+        content.classList.add('hidden');
+      });
+
+      // Show the selected tab content
+      const selectedTab = document.getElementById(tabId);
+      if (selectedTab) {
+        selectedTab.classList.remove('hidden');
+      }
+
+      // Remove the 'active' class from all tab buttons
+      const tabButtons = document.querySelectorAll('.tab-button');
+      tabButtons.forEach((button) => {
+        button.classList.remove('active');
+      });
+
+      // Add the 'active' class to the clicked tab button
+      const clickedButton = document.querySelector(`[onclick="showTab('${tabId}')"]`);
+      if (clickedButton) {
+        clickedButton.classList.add('active');
+      }
+    }
+
+    // Initialize the first tab
+    showTab('tab1');
   </script>
 </body>
 

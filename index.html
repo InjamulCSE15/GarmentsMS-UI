@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garments</title>
+  <link rel="shortcut icon" href="./assets/imgs/LogoSml.jpg" type="image/x-icon">
+  <!-- Angular -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <!-- font-awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- tailwindcss -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter Tight', 'system-ui', 'sans-serif']
+          }
+
+        }
+      }
+    }
+  </script>
+  <style>
+
+  </style>
+
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+  <main ng-app="app" ng-controller="ReportCtrl">
+
+    <!-- Login -->
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800 " ng-show="hideLogin">
+      <div class="relative py-3 sm:max-w-xs sm:mx-auto">
+        <div class="min-h-96 px-8 py-6 mt-4 text-left bg-white dark:bg-gray-900  rounded-xl shadow-lg">
+          <form name="loginForm" ng-submit="submitForm(loginForm.$valid)" novalidate>
+
+            <div class="flex flex-col justify-center items-center h-full select-none">
+              <!-- Logo & Title -->
+              <div class="flex flex-col items-center justify-center gap-2 mb-8">
+                <img src="assets/imgs/LogoSml.jpg" class="w-32" />
+                <p class="m-0 text-[16px] font-semibold dark:text-white">Login to your Account</p>
+              </div>
+
+              <!-- Username Field -->
+              <div class="w-full flex flex-col gap-2 mb-4">
+                <label class="font-semibold text-xs text-gray-400">Username</label>
+                <input type="text" name="username" ng-model="user.username"
+                  class="border rounded-lg px-3 py-2 text-sm w-full outline-none dark:border-gray-500 dark:bg-gray-900"
+                  ng-class="{'border-red-500 dark:border-red-500': loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched)}"
+                  placeholder="Username" required />
+
+                <!-- Error Message -->
+                <span class="text-xs text-red-500"
+                  ng-show="loginForm.username.$invalid && (loginForm.$submitted || loginForm.username.$touched)">
+                  Username is required.
+                </span>
+              </div>
+
+              <!-- Password Field -->
+              <div class="w-full flex flex-col gap-2 mb-4">
+                <label class="font-semibold text-xs text-gray-400">Password</label>
+                <input type="password" name="password" ng-model="user.password"
+                  class="border rounded-lg px-3 py-2 text-sm w-full outline-none dark:border-gray-500 dark:bg-gray-900"
+                  ng-class="{'border-red-500 dark:border-red-500': loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$touched)}"
+                  placeholder="••••••••" required />
+
+                <!-- Error Message -->
+                <span class="text-xs text-red-500"
+                  ng-show="loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$touched)">
+                  Password is required.
+                </span>
+              </div>
+
+            </div>
+
+            <!-- Submit Button (Fixed className to class) -->
+            <div class="mt-5">
+              <button type="submit"
+                class="py-2 px-8 bg-blue-500 hover:bg-blue-800 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none">
+                Login
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="!hideLogin">
+      <!-- Sticky Navbar with Dropdown -->
+      <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <a href="#" class="flex-shrink-0 flex items-center">
+                <img class="h-8 w-auto" src="./assets/imgs/LogoSml.jpg" alt="Logo">
+                <span class="ml-2 text-xl font-bold text-gray-800">Garment<span class="text-green-500">MS</span></span>
+              </a>
+            </div>
+            <div class="flex items-center">
+              <div class="hidden md:ml-4 md:flex md:items-center">
+                <div class="flex gap-3 items-center">
+                  <div>
+                    <i class="fa fa-user-circle fa-2x text-gray-500"></i>
+                  </div>
+                  <div>
+                    <h6 class="text-sm">{{user.username}}</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center md:hidden">
+                <button type="button"
+                  class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-50"
+                  aria-expanded="false">
+                  <span class="sr-only">Open main menu</span>
+                  <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state -->
+        <div class="md:hidden hidden" id="mobile-menu">
+
+          <div class="pt-4 pb-3 border-t border-gray-200">
+            <div class="flex gap-3 items-center">
+              <div>
+                <i class="fa fa-user-circle fa-2x text-gray-500"></i>
+              </div>
+              <div>
+                <h6 class="text-sm">{{user.username}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <section id="services" class="py-16 bg-gray-50 h-screen" data-aos="fade-up">
+        <div class="container mx-auto px-6 lg:px-8 py-6">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-700">Dashboard</span>
+            </h2>
+          </div>
+          <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-700 mb-2 capitalize">last hour product</h2>
+              <p class="text-3xl font-bold text-blue-600">10,492</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-clock"></i> 8:00 AM to 10:00 AM</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-700 mb-2 capitalize">last hour qC</h2>
+              <p class="text-3xl font-bold text-red-500">120</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-clock"></i> 8:00 AM to 10:00 AM</p>
+            </div>            
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-700 mb-2 capitalize">last hour ratio</h2>
+              <p class="text-3xl font-bold text-sky-500">1.25</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-clock"></i> 8:00 AM to 10:00 AM</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-700 mb-2 capitalize">Total Product</h2>
+              <p class="text-3xl font-bold text-sky-500">25,550</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-calendar-check"></i> Today</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-700 mb-2 capitalize">Total Product QC</h2>
+              <p class="text-3xl font-bold text-red-500">350</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-calendar-check"></i> Today</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-700 mb-2 capitalize">Total Ratio</h2>
+              <p class="text-3xl font-bold text-sky-500">3.50</p>
+              <p class="text-sm text-gray-500 mt-2"><i class="fa-regular fa-calendar-check"></i> Today</p>
+            </div>            
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Simple toggle for mobile menu
+    document.querySelector('button[aria-expanded]').addEventListener('click', function () {
+      const mobileMenu = document.getElementById('mobile-menu');
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    const navbar = document.getElementById("navbar");
+
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 50) {
+        navbar.classList.add(
+          "backdrop-blur-md",
+          "bg-white/70",
+          "shadow-lg"
+        );
+      } else {
+        navbar.classList.remove(
+          "backdrop-blur-md",
+          "bg-white/70",
+          "shadow-lg"
+        );
+      }
+    })
+    document.addEventListener("DOMContentLoaded", function () {
+      const inactiveTabClassName = "border-b-transparent font-normal text-gray-400 hover:text-gray-600";
+      const activeTabClassName = "rounded-none border-b-green-500 stroke-green-500 font-semibold text-green-500";
+
+      const tabs = document.querySelectorAll('[role="tab"]');
+      const tabPanels = document.querySelectorAll('[id^="tab-panel-"]');
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", function () {
+          // Hide all tab panels
+          tabPanels.forEach((panel) => {
+            panel.classList.add("hidden");
+          });
+
+          // Remove active styles from all tabs
+          tabs.forEach((t) => {
+            t.setAttribute("aria-selected", "false");
+            t.classList.remove(...activeTabClassName.split(/\s+/));
+            t.classList.add(...inactiveTabClassName.split(/\s+/));
+          });
+
+          // Show the selected tab panel
+          tabPanels[index].classList.remove("hidden");
+
+          // Set the selected tab as active
+          tab.setAttribute("aria-selected", "true");
+          tab.classList.add(...activeTabClassName.split(/\s+/));
+          tab.classList.remove(...inactiveTabClassName.split(/\s+/));
+        });
+      });
+    });
+
+    AOS.init();
+  </script>
+  <script>
+    var app = angular.module('app', []);
+    app.controller('ReportCtrl', function ($scope, $timeout) {
+
+      $scope.user = {
+        username: 'Admin',
+        password: 'Admin@123'
+      };
+
+      $scope.hideLogin = true;
+
+      $scope.submitForm = function (isValid) {
+        // Check if the form validation rules passed
+        if (isValid) {
+          $scope.hideLogin = false;
+
+        } else {
+          console.log('Form is invalid. Review required fields.');
+        }
+      };
+
+    });
+  </script>
+</body>
+
+</html>
+
+</html>
